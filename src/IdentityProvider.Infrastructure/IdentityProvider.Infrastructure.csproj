@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.0" />
+    <PackageReference Include="OpenIddict.EntityFrameworkCore" Version="5.2.0" />
+    <PackageReference Include="OpenIddict.Quartz" Version="5.2.0" />
+    <PackageReference Include="Quartz.Extensions.Hosting" Version="3.8.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\IdentityProvider.Domain\IdentityProvider.Domain.csproj" />
+    <ProjectReference Include="..\IdentityProvider.Application\IdentityProvider.Application.csproj" />
+  </ItemGroup>
+
+</Project>

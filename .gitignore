@@ -1,0 +1,97 @@
+# Build results
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Ll]ways/
+[Ww][Ii][Nn]32/
+[Aa][Ss][Mm]/
+[Mm]an/
+[Tt]est/[Rr]esults/
+[Ss]hipping/[Ff]cq/
+[Dd]ocumentation/[Oo]bj/
+[Dd]ocumentation/[Bb]in/
+[Dd]ocumentation/[Oo]bj/
+
+# Visual Studio files
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.rsuser
+*.nupkg
+**/[Pp]ackages/*
+!packages/build/
+
+# NuGet
+*.nuget.targets
+*.nuget.props
+*.nuget.cache
+
+# MSTest test results
+[Tt]est[Rr]esults/
+[Aa]ssembler[Bb]reakpoints/
+[Uu]pdates/
+*.log
+logs/
+
+# Visual Studio profiler
+*.psess
+*.vsp
+*.vspx
+
+# TFS
+[Tt]est/
+[Ll]ocal/
+[Oo]utput/
+[Ll]og/
+[Bb]uild/
+[Bb][Cc]/
+[Ll]og/
+
+# Entity Framework
+*.db
+*.sqlite
+*.sqlite3
+
+# Web publish output
+[Ee]xported[Oo]bj/
+wwwroot/
+[Ff]cq/[Oo]bj/
+[Ff]cq/[Bb]in/[Rr]elease
+[Ff]cq/[Ss]tables/
+
+# Secrets
+appsettings.*.json
+!appsettings.json
+appsettings.Development.json
+appsettings.Local.json
+*.local.json
+
+# Logs
+*.log
+[Ll]og*/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Temporary files
+*.tmp
+*.temp
+*.cache
+
+# Certificates
+*.pfx
+*.key
+*.pem
+
+# User files
+launchSettings.json
