@@ -1,30 +1,42 @@
-using BCrypt.Net;
 using IdentityProvider.Domain.Entities;
 using IdentityProvider.Domain.Interfaces;
+using IdentityProvider.Infrastructure.Persistence.Interfaces;
 
-namespace IdentityProvider.Infrastructure.Data;
+namespace IdentityProvider.Infrastructure.Services;
 
 public class UserStore : IUserStore
 {
-    private readonly Dictionary<string, User> _users = new(StringComparer.OrdinalIgnoreCase);
+    private readonly IUserRepository _userRepository;
+    private readonly IRepository<PasswordPartial> _passwordPartialRepository;
 
-    public Task<User?> FindByUsernameAsync(string username)
+    public UserStore(IUnitOfWork unitOfWork)
     {
-        _users.TryGetValue(username, out var user);
-        return Task.FromResult(user);
+        _userRepository = unitOfWork.Users;
+        _passwordPartialRepository = unitOfWork.PasswordPartials;
+    }
+
+    public async Task<User?> FindByUsernameAsync(string username)
+    {
+        return await _userRepository.GetByUsernameAsync(username);
     }
 
     public async Task<string?> CreateUserAsync(string username, string password, string email, string? phoneNumber, string[] scopes)
     {
-        if (_users.ContainsKey(username))
+        var existingUser = await _userRepository.GetByUsernameAsync(username);
+        if (existingUser is not null)
+            return null;
+
+        var existingEmail = await _userRepository.GetByEmailAsync(email);
+        if (existingEmail is not null)
             return null;
 
         var subjectId = Guid.NewGuid().ToString();
-        var passwordPartials = GeneratePartialPasswordHashes(password);
+        var userId = Guid.NewGuid();
+        var passwordPartials = GeneratePartialPasswordHashes(password, userId);
 
         var user = new User
         {
-            Id = Guid.NewGuid(),
+            Id = userId,
             Username = username,
             Email = email,
             PhoneNumber = phoneNumber,
@@ -34,29 +46,34 @@ public class UserStore : IUserStore
             PasswordPartials = passwordPartials
         };
 
-        _users[username] = user;
+        await _userRepository.AddAsync(user);
+        await _passwordPartialRepository.AddRangeAsync(passwordPartials);
+        await _userRepository.SaveChangesAsync();
+
         return subjectId;
     }
 
-    public Task<PasswordPartial[]?> GetPartialPasswordChallengesAsync(string username, int count)
+    public async Task<PasswordPartial[]?> GetPartialPasswordChallengesAsync(string username, int count)
     {
-        if (!_users.TryGetValue(username, out var user))
-            return Task.FromResult<PasswordPartial[]?>(null);
+        var user = await _userRepository.GetByUsernameAsync(username);
+        if (user is null)
+            return null;
 
         var random = new Random();
         var shuffled = user.PasswordPartials.OrderBy(_ => random.Next()).Take(count).ToArray();
 
-        return Task.FromResult<PasswordPartial[]?>(shuffled);
+        return shuffled;
     }
 
     public async Task<bool> ValidatePartialPasswordAsync(string username, Dictionary<int, char> positions)
     {
-        if (!_users.TryGetValue(username, out var user))
+        var user = await _userRepository.GetByUsernameAsync(username);
+        if (user is null)
             return false;
 
         foreach (var (index, expectedChar) in positions)
         {
-            var partial = user.PasswordPartials.FirstOrDefault(p => 
+            var partial = user.PasswordPartials.FirstOrDefault(p =>
                 p.PositionIndexes.Length == 1 && p.PositionIndexes[0] == index);
 
             if (partial is null)
@@ -69,7 +86,7 @@ public class UserStore : IUserStore
         return true;
     }
 
-    private static List<PasswordPartial> GeneratePartialPasswordHashes(string password)
+    private static List<PasswordPartial> GeneratePartialPasswordHashes(string password, Guid userId)
     {
         var combinations = GetCombinations(8, 4);
         var partials = new List<PasswordPartial>();
@@ -83,7 +100,7 @@ public class UserStore : IUserStore
             partials.Add(new PasswordPartial
             {
                 Id = Guid.NewGuid(),
-                UserId = Guid.Empty,
+                UserId = userId,
                 PositionIndexes = combo.ToArray(),
                 Hash = hash
             });

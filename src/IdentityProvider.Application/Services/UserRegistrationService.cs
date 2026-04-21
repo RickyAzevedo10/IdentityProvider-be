@@ -3,7 +3,7 @@ using IdentityProvider.Application.Interfaces;
 using IdentityProvider.Domain.Entities;
 using IdentityProvider.Domain.Interfaces;
 
-namespace IdentityProvider.Infrastructure.Services;
+namespace IdentityProvider.Application.Services;
 
 public class UserRegistrationService : IUserRegistrationService
 {

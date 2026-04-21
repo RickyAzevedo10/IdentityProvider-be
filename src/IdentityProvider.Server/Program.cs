@@ -3,25 +3,58 @@ using System.IO;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using IdentityProvider.Application.Interfaces;
+using IdentityProvider.Application.Services;
 using IdentityProvider.Domain.Interfaces;
 using IdentityProvider.Infrastructure.Data;
 using IdentityProvider.Infrastructure.Identity;
+using IdentityProvider.Infrastructure.Persistence.Context;
+using IdentityProvider.Infrastructure.Persistence.Interfaces;
+using IdentityProvider.Infrastructure.Persistence.UnitOfWork;
+using IdentityProvider.Infrastructure.Services;
 using IdentityProvider.Server.Config;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Infrastructure - register services via interfaces
-builder.Services.AddSingleton<IUsernameStore, UsernameStore>();
-builder.Services.AddSingleton<IUserStore, UserStore>();
-builder.Services.AddScoped<IAuthService, IdentityProvider.Infrastructure.Services.AuthService>();
-builder.Services.AddScoped<IUserRegistrationService, IdentityProvider.Infrastructure.Services.UserRegistrationService>();
+// Database - ApplicationDbContext
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+{
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        sqlOptions =>
+        {
+            sqlOptions.EnableRetryOnFailure(
+                maxRetryCount: 5,
+                maxRetryDelay: TimeSpan.FromSeconds(10),
+                errorNumbersToAdd: null);
+            sqlOptions.CommandTimeout(30);
+        });
+
+    options.EnableSensitiveDataLogging(builder.Environment.IsDevelopment());
+    options.EnableDetailedErrors(builder.Environment.IsDevelopment());
+});
+
+// Infrastructure - Unit of Work
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+// Infrastructure - Services
+builder.Services.AddScoped<IUsernameStore, UsernameStore>();
+builder.Services.AddScoped<IUserStore, UserStore>();
+
+// Application - Services
+builder.Services.AddScoped<IUserRegistrationService, UserRegistrationService>();
+
+// Infrastructure - Auth Services
+builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IDatabaseSeeder, DatabaseSeeder>();
 
 // Infrastructure - OpenIddict core (DbContext, EF Core, Quartz)
-builder.Services.AddOpenIddictCore();
+builder.Services.AddOpenIddictCore(builder.Configuration);
 
 // Server - OpenIddict server and validation (ASP.NET Core specific)
 builder.Services.AddOpenIddict()

@@ -1,0 +1,35 @@
+Quero que cries toda a infraestrutura de persistência para o meu sistema de autenticação, substituindo o armazenamento in-memory por uma base de dados real.  
+Segue exatamente estas instruções:
+
+1. A base de dados deve ser **relacional**, usando **SQL Server**.  
+2. Cria o **ApplicationDbContext** com todas as DbSet necessárias.    
+4. Para cada entidade, cria também:  
+   - A respetiva **configuration class** usando `IEntityTypeConfiguration<T>`  
+   - As **constraints**, **chaves primárias**, **chaves estrangeiras**, **índices**, **tamanhos máximos**, **tipos de coluna**, etc.  
+5. Implementa o **Repository Pattern**:  
+   - Cria uma interface genérica `IRepository<T>`  
+   - Cria uma implementação genérica `Repository<T>` (base repository)  
+   - Cria repositórios específicos quando fizer sentido (ex.: IUserRepository)  
+6. Implementa o **Unit of Work**:  
+   - Interface `IUnitOfWork`  
+   - Implementação `UnitOfWork` com acesso a todos os repositórios  
+7. Configura o **ApplicationDbContext** para SQL Server, incluindo:  
+   - Connection string  
+   - Migrations  
+   - Fluent API  
+   - Tracking behavior  
+   - Cascade rules  
+8. Cria também:  
+   - A pasta `Persistence` com subpastas:
+     - `Configurations`  
+     - `Repositories`  
+     - `Interfaces`  
+     - `UnitOfWork`  
+     - `Context`  
+9. Gera também o código necessário para:  
+   - Criar a base de dados  
+   - Aplicar migrations    
+10. Garante que todo o código segue boas práticas de arquitetura limpa e separação de camadas.  
+11. Se faltar alguma coisa essencial para um sistema de autenticação robusto, adiciona automaticamente.
+
+Quero que cries **todo o código completo**, organizado por ficheiros, com nomes corretos e estrutura final pronta para copiar para o meu projeto.

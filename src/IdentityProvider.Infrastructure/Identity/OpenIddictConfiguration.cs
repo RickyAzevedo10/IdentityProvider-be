@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Quartz;
 
@@ -14,8 +15,9 @@ public static class OpenIddictConfiguration
     /// Server and validation configuration must be added separately in the Server project.
     /// </summary>
     /// <param name="services">The service collection.</param>
+    /// <param name="configuration">The configuration.</param>
     /// <returns>The service collection for chaining.</returns>
-    public static IServiceCollection AddOpenIddictCore(this IServiceCollection services)
+    public static IServiceCollection AddOpenIddictCore(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddQuartz(options =>
         {
@@ -27,7 +29,16 @@ public static class OpenIddictConfiguration
 
         services.AddDbContext<DbContext>(options =>
         {
-            options.UseSqlite($"Filename={System.IO.Path.Combine(System.IO.Path.GetTempPath(), "openiddict-zirku-server.sqlite3")}");
+            options.UseSqlServer(
+                configuration.GetConnectionString("DefaultConnection"),
+                sqlOptions =>
+                {
+                    sqlOptions.EnableRetryOnFailure(
+                        maxRetryCount: 5,
+                        maxRetryDelay: TimeSpan.FromSeconds(10),
+                        errorNumbersToAdd: null);
+                    sqlOptions.CommandTimeout(30);
+                });
             options.UseOpenIddict();
         });
 
