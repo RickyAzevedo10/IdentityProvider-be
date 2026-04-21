@@ -14,8 +14,10 @@ using IdentityProvider.Server.Config;
 var builder = WebApplication.CreateBuilder(args);
 
 // Infrastructure - register services via interfaces
+builder.Services.AddSingleton<IUsernameStore, UsernameStore>();
 builder.Services.AddSingleton<IUserStore, UserStore>();
 builder.Services.AddScoped<IAuthService, IdentityProvider.Infrastructure.Services.AuthService>();
+builder.Services.AddScoped<IUserRegistrationService, IdentityProvider.Infrastructure.Services.UserRegistrationService>();
 builder.Services.AddScoped<IDatabaseSeeder, DatabaseSeeder>();
 
 // Infrastructure - OpenIddict core (DbContext, EF Core, Quartz)
