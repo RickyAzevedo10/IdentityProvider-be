@@ -17,7 +17,7 @@ using IdentityProvider.Infrastructure.Persistence.Context;
 using IdentityProvider.Infrastructure.Persistence.Interfaces;
 using IdentityProvider.Infrastructure.Persistence.UnitOfWork;
 using IdentityProvider.Infrastructure.Services;
-using IdentityProvider.Server.Config;
+using IdentityProvider.WebApi.Config;
 
 var builder = WebApplication.CreateBuilder(args);
 

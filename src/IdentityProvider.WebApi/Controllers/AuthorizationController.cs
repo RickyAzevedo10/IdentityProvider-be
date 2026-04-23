@@ -14,7 +14,7 @@ using OpenIddict.Server.AspNetCore;
 using IdentityProvider.Domain.Interfaces;
 using static OpenIddict.Abstractions.OpenIddictConstants;
 
-namespace IdentityProvider.Server.Controllers;
+namespace IdentityProvider.WebApi.Controllers;
 
 [ApiController]
 public class AuthorizationController : Controller

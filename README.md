@@ -13,7 +13,7 @@ OpenIdDict-IdentityProvider/
     ├── IdentityProvider.Domain/               ← DLL: Domain (sem dependências)
     ├── IdentityProvider.Application/          ← DLL: Application (depende de Domain)
     ├── IdentityProvider.Infrastructure/       ← DLL: Infrastructure (depende de Domain + Application)
-    ├── IdentityProvider.Server/               ← Web API (depende de todas)
+    ├── IdentityProvider.WebApi/               ← Web API (depende de todas)
     └── zirku-app/                  ← React Frontend
 ```
 
@@ -21,12 +21,12 @@ OpenIdDict-IdentityProvider/
 
 ```
 ┌─────────────────┐
-│  IdentityProvider.Server   │  (Presentation - Web API)
+│  IdentityProvider.WebApi   │  (Presentation - Web API)
 │                 │
 │  ┌───────────┐  │
 │  │Controllers│  │  references
 │  │  Config   │  │  ┌──────────────────┐
-│  └─────┬─────┘  │  │ IdentityProvider.Server     │
+│  └─────┬─────┘  │  │ IdentityProvider.WebApi     │
 └────────┼────────┘  └──────────────────┘
          │
          ▼
@@ -71,7 +71,7 @@ OpenIdDict-IdentityProvider/
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    IdentityProvider.Server (Port 44319)                │
+│                    IdentityProvider.WebApi (Port 44319)                │
 │                                                             │
 │  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────┐ │
 │  │ OAuth2 Endpoints│  │ Auth API        │  │ Resource API│ │
@@ -122,7 +122,7 @@ Biblioteca de classes que contém implementações concretas.
 | `Data/DatabaseSeeder.cs` | Implementação de `IDatabaseSeeder` |
 | `Identity/OpenIddictConfiguration.cs` | Configuração do OpenIddict Core |
 
-### IdentityProvider.Server
+### IdentityProvider.WebApi
 Web API que serve como ponto de entrada da aplicação.
 
 | Componente | Descrição |
@@ -157,7 +157,7 @@ Frontend React com autenticação OAuth2 PKCE:
 ### 1. Iniciar o Server
 
 ```bash
-dotnet run --project src/IdentityProvider.Server
+dotnet run --project src/IdentityProvider.WebApi
 ```
 
 O Server inicia em `https://localhost:44319` e serve as páginas de login em `https://localhost:44319/login`.

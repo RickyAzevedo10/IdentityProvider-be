@@ -8,7 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityProvider.Applicatio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityProvider.Infrastructure", "src\IdentityProvider.Infrastructure\IdentityProvider.Infrastructure.csproj", "{C3D4E5F6-A7B8-9012-CDEF-123456789012}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityProvider.WebApi", "src\IdentityProvider.Server\IdentityProvider.WebApi.csproj", "{FFB6B185-20E0-168D-1733-641C2D78484F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityProvider.WebApi", "src\IdentityProvider.WebApi\IdentityProvider.WebApi.csproj", "{FFB6B185-20E0-168D-1733-641C2D78484F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -2,7 +2,7 @@ using System;
 using System.Security.Cryptography;
 using Microsoft.IdentityModel.Tokens;
 
-namespace IdentityProvider.Server.Helpers;
+namespace IdentityProvider.WebApi.Helpers;
 
 public static class CertificateHelper
 {

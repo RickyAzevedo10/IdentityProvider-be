@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using OpenIddict.Validation.AspNetCore;
 using static OpenIddict.Abstractions.OpenIddictConstants;
 
-namespace IdentityProvider.Server.Controllers;
+namespace IdentityProvider.WebApi.Controllers;
 
 /// <summary>
 /// Protected resource endpoints

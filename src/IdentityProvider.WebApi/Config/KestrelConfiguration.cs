@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace IdentityProvider.Server.Config;
+namespace IdentityProvider.WebApi.Config;
 
 public static class KestrelConfiguration
 {

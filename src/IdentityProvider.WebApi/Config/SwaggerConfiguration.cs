@@ -3,7 +3,7 @@ using Microsoft.OpenApi.Models;
 using System.IO;
 using System.Reflection;
 
-namespace IdentityProvider.Server.Config;
+namespace IdentityProvider.WebApi.Config;
 
 public static class SwaggerConfiguration
 {

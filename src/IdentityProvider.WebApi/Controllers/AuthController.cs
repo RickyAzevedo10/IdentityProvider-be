@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using IdentityProvider.Application.DTOs;
 using IdentityProvider.Application.Interfaces;
 
-namespace IdentityProvider.Server.Controllers;
+namespace IdentityProvider.WebApi.Controllers;
 
 [ApiController]
 [Route("api/auth")]
